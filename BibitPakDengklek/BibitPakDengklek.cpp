@@ -13,6 +13,7 @@ int
 main()
 {
 	const unsigned long MAX_N = (unsigned long)pow(10, 9);
+
 	unsigned long jumlah_bibit = 0;
 
 	std::list<Vec2> Kemungkinan;
@@ -28,19 +29,22 @@ main()
 	}
 
 	// cari ukuran lahan yang sesuai
-	for (unsigned long row = 0; row <= jumlah_bibit; row++) {
-		for (unsigned long col = 0; col <= jumlah_bibit; col++) {
+	for (unsigned long row = 1; row <= jumlah_bibit; row++) {
 
-			if ((row * col != jumlah_bibit) || (row == col))
-				continue;
+		unsigned long selisih, col;
 
-			unsigned long selisih = CARI_SELISIH(row, col);
+		if (jumlah_bibit % row != 0)
+			continue;
 
-			if ((row == 1 && col == 1) ||
-			    (selisih < selisih_terkecil)) {
-				selisih_terkecil = selisih;
-			}
+		col = (jumlah_bibit / row);
 
+		if ((row * col != jumlah_bibit) || (row == col))
+			continue;
+
+		selisih = CARI_SELISIH(row, col);
+
+		if ((row == 1) || (selisih < selisih_terkecil)) {
+			selisih_terkecil = selisih;
 			Kemungkinan.push_back({.row = row, .col = col});
 		}
 	}
@@ -48,7 +52,8 @@ main()
 	// cari ukuran yang memiliki selisih terkecil
 	for (Vec2 ukuran : Kemungkinan) {
 		if ((CARI_SELISIH(ukuran.row, ukuran.col) == selisih_terkecil))
-			std::cout << ukuran.row << "X" << ukuran.col << "\n";
+			std::cout << "-> " << ukuran.row << "X" << ukuran.col
+			          << "\n";
 	}
 
 	return 0;
